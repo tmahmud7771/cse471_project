@@ -38,8 +38,7 @@ const verifyEmailAddress = async (req, res) => {
 };
 
 const registerCustomer = async (req, res) => {
-  const token = req.params.token;
-  const { name, email, password } = jwt.decode(token);
+  const { name, email, password } = req.body;
   const isAdded = await Customer.findOne({ email: email });
 
   if (isAdded) {
@@ -51,30 +50,20 @@ const registerCustomer = async (req, res) => {
       email: isAdded.email,
       message: "Email Already Verified!",
     });
-  }
-
-  if (token) {
-    jwt.verify(token, process.env.JWT_SECRET_FOR_VERIFY, (err, decoded) => {
-      if (err) {
-        return res.status(401).send({
-          message: "Token Expired, Please try again!",
-        });
-      } else {
-        const newUser = new Customer({
-          name,
-          email,
-          password: bcrypt.hashSync(password),
-        });
-        newUser.save();
-        const token = signInToken(newUser);
-        res.send({
-          token,
-          _id: newUser._id,
-          name: newUser.name,
-          email: newUser.email,
-          message: "Email Verified, Please Login Now!",
-        });
-      }
+  } else {
+    const newUser = new Customer({
+      name,
+      email,
+      password: bcrypt.hashSync(password),
+    });
+    newUser.save();
+    const token = signInToken(newUser);
+    res.send({
+      token,
+      _id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+      message: "Email Verified, Please Login Now!",
     });
   }
 };
