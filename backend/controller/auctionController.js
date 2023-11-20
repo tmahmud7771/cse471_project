@@ -29,7 +29,7 @@ const createAuction = async (req, res) => {
 
 const getAllAuctions = async (req, res) => {
   try {
-    const auctions = await Auction.find({}).sort({ _id: -1 });
+    const auctions = await Auction.find({}).sort({ timestamp: -1 });
     res.send(auctions);
   } catch (err) {
     res.status(500).send({
