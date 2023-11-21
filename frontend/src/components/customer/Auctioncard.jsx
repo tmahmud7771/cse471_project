@@ -1,0 +1,145 @@
+import React from 'react';
+import { useState } from 'react';
+
+const Auctioncard = () => {
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [bidPrice, setBidPrice] = useState('');
+    const [tranxd,setTrnxd] = useState('')
+    const openModal = () => {
+      setIsModalOpen(true);
+    };
+  
+    const closeModal = () => {
+      setIsModalOpen(false);
+    };
+  
+    const submitBid = () => {
+      // Add your logic to handle the bid submission
+      if (bidPrice.trim() === '') {
+        alert('Please enter a bid amount.');
+        return;
+      }
+      if (tranxd.trim() === '') {
+        alert('Please enter a transaction id');
+        return;
+      }
+      if (bidPrice.trim() === '') {
+        alert('Please enter a bid amount.');
+        return;
+      }
+  
+      alert(`Bid submitted! Price: ${bidPrice}`);
+      closeModal();
+    };
+  
+    return (
+        <>
+              <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <a href="#">
+        <div className="relative">
+          <img
+            className="rounded-t-lg"
+            src="https://media-r2.carsandbids.com/cdn-cgi/image/width=2080,quality=70/c51905b0000b639a185eeb080dd879bf007f5604/photos/rJZJNLNp-J__YzIWfR1-(edit).jpg?t=169626273024"
+            alt=""
+          />
+          <div className="absolute top-0 right-0 bg-black bg-opacity-50 text-white p-2">
+            <span id="timer">3d 12h 34m</span>
+          </div>
+        </div>
+      </a>
+      <div className="p-5">
+        <a href="#">
+          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            1998 Nissan Stagea 260RS Autech
+          </h5>
+        </a>
+        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Rare Japanese-Market Wagon, GT-R Turbo 6-Cylinder, 5-Speed Manual, U.S. Title</p>
+        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Bid start at <b className='text-white'>BDT 22.5 Lac</b></p>
+
+        {/* Add a button to trigger the modal */}
+        <button
+          onClick={openModal}
+          className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Place BID
+          <svg
+            className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 10"
+          >
+            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+          </svg>
+        </button>
+      </div>
+
+      {/* The modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-10 overflow-y-auto">
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            {/* Background overlay */}
+            <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+
+            {/* Modal panel */}
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+              &#8203;
+            </span>
+            <div
+              className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="modal-headline"
+            >
+              <div className="bg-white p-4">
+                <h1 className="text-lg font-medium text-gray-900">Car Details</h1>
+                <p className="mb-2">Registration: ABC-123</p>
+                <p className="mb-2">Engine Size: 2.6L</p>
+                {/* Add more details as needed */}
+                <h1 className="text-lg font-medium text-gray-900 mt-4">Enter your bidding price:</h1>
+                <input
+                  required
+                  type="text"
+                  value={bidPrice}
+                  onChange={(e) => setBidPrice(e.target.value)}
+                  placeholder="Enter your bid"
+                  className="mt-2 p-2 border border-gray-300 rounded-md w-full"
+                />
+                <h1 className="text-lg font-medium text-gray-900 mt-4">Please pay BDT 1000 through Bkash at 01727260141:</h1>
+                <input
+                  required
+                  type="text"
+                  value={tranxd}
+                  onChange={(e) => setTrnxd(e.target.value)}
+                  placeholder="Enter trnxd id"
+                  className="mt-2 p-2 border border-gray-300 rounded-md w-full"
+                />
+                <div className="mt-4 flex justify-end">
+                  <button
+                    onClick={submitBid}
+                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                  >
+                    Submit Bid
+                  </button>
+                  <button
+                    onClick={closeModal}
+                    className="ml-2 inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+        
+        </>
+    );
+};
+
+export default Auctioncard;
