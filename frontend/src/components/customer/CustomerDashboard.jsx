@@ -67,7 +67,7 @@ const CustomerDashboard = () => {
     // Perform search logic with the searchTerm
     console.log(`Searching for: ${searchTerm}`);
   };
-  let placebid = true;
+  
 
   return (
     <>
@@ -140,19 +140,19 @@ const CustomerDashboard = () => {
       </div>
 
 
-      <div className="flex justify-center bg-gray-900 rounded-[50px]">
+      <div className="flex justify-center bg-gray-900 rounded-[50px] shadow-lg">
         <Auctoinform/>
 
       </div>
 
       <div className = "ml-5 font-semibold my-10 text-2xl relative">
 
-        My auctions
+        My Auctions
         <div className="absolute h-0.5 w-full bg-gray-800 bottom-0"></div>
 
       </div>
 
-      <div className="flex flex-wrap mx-5 mt-10 gap-24 overflow-auto ">
+      <div className="flex flex-wrap mx-5 mt-10 gap-24 overflow-auto  ">
         <Auctioncard
         imagelink="https://media-r2.carsandbids.com/cdn-cgi/image/width=2080,quality=70/ee7f173e46ec801a48d1673c50f9cebaa1bf2854/photos/3gedNQmb-Ew-ISBZumA-(edit).jpg?t=169843298201"
         carname="2021 Ferrari F8 Spider"
@@ -163,6 +163,85 @@ const CustomerDashboard = () => {
         />
       </div>
 
+
+      <div className = "ml-5 font-semibold my-10 text-2xl relative">
+
+            My Bids
+        <div className="absolute h-0.5 w-full bg-gray-800 bottom-0"></div>
+
+        </div>
+      <div className=" flex flex-wrap mx-5 my-10 gap-24 overflow-auto" >
+      <table id="bookingTable" className="w-full border-collapse">
+                <thead>
+                    <tr>
+                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">ID</th>
+                        
+                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">Car Model </th>
+                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">Email</th>
+                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">Placed Bid</th>
+                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">Payment</th>
+                        
+                    </tr>
+        </thead>
+        
+        <tbody>
+        
+          
+          <tr className=''>
+            <td className="pt-2">1</td>
+      
+            <td className="pt-2">2003 Porsche 911 Turbo Coupe</td>
+            <td className="pt-2">wasi@gmail.com</td>
+            <td className="pt-2"><b>BDT 1.4 Cr.</b></td>
+            <td className="pt-2 flex justify-center">
+            <button>
+                <div className="w-[75px] h-8 px-5 py-1.5 bg-yellow-500 rounded shadow flex-col justify-center items-center gap-2.5 inline-flex">
+                    <div className="text-black text-base font-light font-['Oxygen']">Pending</div>
+            </div></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <div className = "ml-5 font-semibold my-10 text-2xl relative">
+
+        Bids On My Car
+      <div className="absolute h-0.5 w-full bg-gray-800 bottom-0"></div>
+      </div>
+      <div className=" flex flex-wrap mx-5 my-10 gap-24 overflow-auto" >
+      <table id="bookingTable" className="w-full border-collapse">
+                <thead>
+                    <tr>
+                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">ID</th>
+                        
+                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">Car Model </th>
+                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">Email</th>
+                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">Placed Bid</th>
+                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">Payment</th>
+                        
+                    </tr>
+        </thead>
+        
+        <tbody>
+        
+          
+          <tr className=''>
+            <td className="pt-2">1</td>
+      
+            <td className="pt-2">2021 Ferrari F8 Spider</td>
+            <td className="pt-2">tausif@gmail.com</td>
+            <td className="pt-2"><b>BDT 4.6 Cr.</b></td>
+            <td className="pt-2 flex justify-center">
+            <button>
+                <div className="w-[75px] h-8 px-5 py-1.5 bg-yellow-500 rounded shadow flex-col justify-center items-center gap-2.5 inline-flex">
+                    <div className="text-black text-base font-light font-['Oxygen']">Pending</div>
+            </div></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    
     </>
   );
 };
