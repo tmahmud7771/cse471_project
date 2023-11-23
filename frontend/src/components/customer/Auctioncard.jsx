@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 
-const Auctioncard = () => {
+const Auctioncard = ({imagelink,carname,details,startbid,placebid = true, timer}) => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [bidPrice, setBidPrice] = useState('');
@@ -31,33 +31,38 @@ const Auctioncard = () => {
   
       alert(`Bid submitted! Price: ${bidPrice}`);
       closeModal();
+      setBidPrice("")
+      setTrnxd("")
     };
+
+    
   
     return (
         <>
-              <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-      <a href="#">
+      <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 ">
+
         <div className="relative">
           <img
             className="rounded-t-lg"
-            src="https://media-r2.carsandbids.com/cdn-cgi/image/width=2080,quality=70/c51905b0000b639a185eeb080dd879bf007f5604/photos/rJZJNLNp-J__YzIWfR1-(edit).jpg?t=169626273024"
-            alt=""
+            src={imagelink}
+            alt="car"
           />
           <div className="absolute top-0 right-0 bg-black bg-opacity-50 text-white p-2">
-            <span id="timer">3d 12h 34m</span>
+            <span id="timer">{timer}</span>
           </div>
         </div>
-      </a>
+
       <div className="p-5">
-        <a href="#">
+
           <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            1998 Nissan Stagea 260RS Autech
+            {carname}
           </h5>
-        </a>
-        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Rare Japanese-Market Wagon, GT-R Turbo 6-Cylinder, 5-Speed Manual, U.S. Title</p>
-        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Bid start at <b className='text-white'>BDT 22.5 Lac</b></p>
+
+        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{details}</p>
+        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Bid start at <b className='text-white'>BDT {startbid}</b></p>
 
         {/* Add a button to trigger the modal */}
+        {placebid && (
         <button
           onClick={openModal}
           className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -73,6 +78,7 @@ const Auctioncard = () => {
             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
           </svg>
         </button>
+          ) }
       </div>
 
       {/* The modal */}
@@ -96,8 +102,9 @@ const Auctioncard = () => {
             >
               <div className="bg-white p-4">
                 <h1 className="text-lg font-medium text-gray-900">Car Details</h1>
-                <p className="mb-2">Registration: ABC-123</p>
+                <p className="mb-2">Registration: 2022</p>
                 <p className="mb-2">Engine Size: 2.6L</p>
+                
                 {/* Add more details as needed */}
                 <h1 className="text-lg font-medium text-gray-900 mt-4">Enter your bidding price:</h1>
                 <input
