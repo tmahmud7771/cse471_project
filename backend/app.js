@@ -7,7 +7,8 @@ const helmet = require("helmet");
 
 const customerRoutes = require("./routes/customerRoutes");
 const adminRoutes = require("./routes/adminRoutes");
-const auctionRoutes = require("./routes/auctionRoutes")
+const auctionRoutes = require("./routes/auctionRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 
 // Create express app
 const app = express();
@@ -32,7 +33,9 @@ app.get("/", (req, res) => {
 
 app.use("/api/customer/", customerRoutes);
 app.use("/api/admin/", adminRoutes);
-app.use("/api/auctoin",auctionRoutes)
+app.use("/api/auctoin", auctionRoutes);
+app.use("/api/payment", paymentRoutes);
+
 // Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server started on port ${port}`));
