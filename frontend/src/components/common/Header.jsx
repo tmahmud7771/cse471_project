@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Img from "../../assets/Black_and_Red_Modern_Automotive_Car_Logo__2_-removebg-preview.png";
+import Img from "../assets/Black_and_Red_Modern_Automotive_Car_Logo__2_-removebg-preview.png";
 
 const Header = () => {
   const navigate = useNavigate();

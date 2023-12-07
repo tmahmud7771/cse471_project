@@ -6,7 +6,7 @@ import RegForm from "./components/auth/RegForm";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import CustomerDashboard from "./components/customer/CustomerDashboard";
 import ChangePass from "./components/auth/ChangePass";
-import Landingpage from "./components/LandingPage/LandingPage";
+import Landingpage from "./components/LandingPage/Landingpage";
 
 function App() {
   return (

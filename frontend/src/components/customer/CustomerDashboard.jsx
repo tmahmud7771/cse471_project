@@ -126,9 +126,12 @@ const CustomerDashboard = () => {
 
   return (
     <>
-      <div className="ml-5 font-semibold mt-10 text-2xl relative">
+      <div className=" flex flex-row justify-between ml-5  mt-10 relative">
         <div className="absolute h-0.5 w-full bg-gray-800 bottom-0"></div>
-        On Going Auctions
+        <p className=" font-semibold text-2xl ">On Going Auctions</p>
+        <button className="rounded shadow-sm text-white bg-gray-800 mr-4 mb-4 hover:bg-gray-900">
+          Show Notification
+        </button>
       </div>
 
       <div className="flex items-center mt-3 ml-5">
@@ -305,7 +308,7 @@ const CustomerDashboard = () => {
           Report and Issue
           <div className="absolute h-0.5 w-full bg-gray-800 bottom-0"></div>
         </div>
-        <div className="flex flex-wrap -mx-3 mb-6">
+        <div className="flex flex-wrap -mx-3 mb-6 ml-2">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label className="block uppercase tracking-wide text-black text-xs font-bold mb-2">
               Describe The Issues You Faced
@@ -319,7 +322,7 @@ const CustomerDashboard = () => {
             />
           </div>
         </div>
-        <div className="flex justify-start">
+        <div className="flex justify-start ml-2 mb-2">
           <button
             type="submit"
             className="px-4 py-2 font-bold text-white bg-gray-800 rounded hover:bg-gray-900 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
