@@ -14,13 +14,12 @@ function App() {
       <Header />
 
       <Routes>
-        <Route path="/" element={<h1>Home</h1>} />
+        <Route path="/" element={<Landingpage />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/customer" element={<CustomerDashboard />} />
         <Route path="/signup" element={<RegForm />} />
         <Route path="/login" element={<LoginFrom />} />
         <Route path="/changepass" element={<ChangePass />} />
-        <Route path="/landingpage" element={<Landingpage />} />
       </Routes>
     </Router>
   );
