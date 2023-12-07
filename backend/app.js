@@ -9,6 +9,7 @@ const customerRoutes = require("./routes/customerRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const auctionRoutes = require("./routes/auctionRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const Report = require("./models/report");
 
 // Create express app
 const app = express();
@@ -35,6 +36,18 @@ app.use("/api/customer/", customerRoutes);
 app.use("/api/admin/", adminRoutes);
 app.use("/api/auctoin", auctionRoutes);
 app.use("/api/payment", paymentRoutes);
+
+app.get("/api/report", async (req, res) => {
+  const reportData = await Report.find({});
+  res.send(reportData);
+});
+
+app.post("/api/make/report", async (req, res) => {
+  const reportData = req.body;
+  const newReport = new Report(reportData);
+  const savedReport = await newReport.save();
+  res.send(savedReport);
+});
 
 // Start the server
 const port = process.env.PORT || 3000;

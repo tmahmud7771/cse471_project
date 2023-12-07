@@ -11,6 +11,7 @@ const signInToken = (user) => {
       address: user.address,
       phone: user.phone,
       image: user.image,
+      isAdmin: user.isAdmin,
     },
     process.env.JWT_SECRET,
     {

@@ -101,6 +101,7 @@ const loginCustomer = async (req, res) => {
         address: customer.address,
         phone: customer.phone,
         image: customer.image,
+        isAdmin: customer.isAdmin,
       });
     } else {
       res.status(401).send({

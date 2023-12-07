@@ -5,14 +5,32 @@ const bidderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
   bidAmount: {
     type: Number,
     required: true,
+  },
+  bidtrnx: {
+    type: String,
+    require: true,
+  },
+  bidderEmail: {
+    type: String,
+    require: true,
+  },
+  payment: {
+    type: Boolean,
+    default: false,
   },
 });
 
 const auctionSchema = new mongoose.Schema(
   {
+    email: {
+      type: String,
+      require: true,
+    },
+
     carName: {
       type: String,
       required: true,
@@ -26,7 +44,7 @@ const auctionSchema = new mongoose.Schema(
       required: true,
     },
     startingPrice: {
-      type: Number,
+      type: String,
       required: true,
     },
     date: {

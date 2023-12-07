@@ -3,6 +3,7 @@ import { Card } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 import Auctioncard from "./Auctioncard";
 import Auctoinform from "./Auctoinform";
+import axios from "axios";
 const CustomerDashboard = () => {
   function checkUserLoggedIn() {
     const token = localStorage.getItem("token");
@@ -22,17 +23,50 @@ const CustomerDashboard = () => {
     ? JSON.parse(localStorage.getItem("user")).email
     : "";
 
+  const [data, setData] = useState();
+  const [email, setEmail] = useState();
+  const [refresh, setRefrsh] = useState();
+  const [usercardata, setUsercardata] = useState();
+  const [issue, setIssue] = useState("");
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3001/api/auctoin/getallauctoin"
+      );
+      setData(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // Handle error appropriately
+    }
+  };
+  const fetchuserData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/api/auctoin/${userEmail}`
+      );
+      setUsercardata(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // Handle error appropriately
+    }
+  };
+
   useEffect(() => {
     if (!userLoggedIn) {
       navigate("/login");
     }
+
+    fetchData();
+    fetchuserData();
   }, []);
 
-
+  console.log(data);
+  console.log(usercardata);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [bidPrice, setBidPrice] = useState('');
-  const [tranxd,setTrnxd] = useState('')
+  const [bidPrice, setBidPrice] = useState("");
+  const [tranxd, setTrnxd] = useState("");
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -43,16 +77,16 @@ const CustomerDashboard = () => {
 
   const submitBid = () => {
     // Add your logic to handle the bid submission
-    if (bidPrice.trim() === '') {
-      alert('Please enter a bid amount.');
+    if (bidPrice.trim() === "") {
+      alert("Please enter a bid amount.");
       return;
     }
-    if (tranxd.trim() === '') {
-      alert('Please enter a transaction id');
+    if (tranxd.trim() === "") {
+      alert("Please enter a transaction id");
       return;
     }
-    if (bidPrice.trim() === '') {
-      alert('Please enter a bid amount.');
+    if (bidPrice.trim() === "") {
+      alert("Please enter a bid amount.");
       return;
     }
 
@@ -60,21 +94,42 @@ const CustomerDashboard = () => {
     closeModal();
   };
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Handle search button click
   const handleSearch = () => {
     // Perform search logic with the searchTerm
     console.log(`Searching for: ${searchTerm}`);
   };
-  
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post(
+        `http://localhost:3001/api/make/report`,
+        {
+          email: userEmail,
+          name: JSON.parse(localStorage.getItem("user")).name,
+          message: issue,
+        }
+      );
+      console.log(response.data);
+
+      // Assuming bidPrice is a state or prop that holds the bid price
+      // Update this alert message based on your application's context
+      alert("Report submitted successfully!");
+    } catch (err) {
+      console.error("Error submitting report:", err);
+      alert("Failed to submit report.");
+    }
+  };
 
   return (
     <>
-    <div className="ml-5 font-semibold mt-10 text-2xl relative">
-      <div className="absolute h-0.5 w-full bg-gray-800 bottom-0"></div>
-      On Going Auctions
-    </div>
+      <div className="ml-5 font-semibold mt-10 text-2xl relative">
+        <div className="absolute h-0.5 w-full bg-gray-800 bottom-0"></div>
+        On Going Auctions
+      </div>
 
       <div className="flex items-center mt-3 ml-5">
         <input
@@ -92,156 +147,188 @@ const CustomerDashboard = () => {
         </button>
       </div>
 
-      <div className="flex flex-wrap mx-5 mt-10 gap-24 overflow-auto ">
-
-        <Auctioncard 
-        imagelink="https://media-r2.carsandbids.com/cdn-cgi/image/width=2080,quality=70/d9b636c2ec84ddc3bc7f2eb32861b39bdd5f9683/photos/9amj8Ylo-oVsFWUrf2s-(edit).jpg?t=169972467674"
-        carname = "2003 Porsche 911 Turbo Coupe"
-        details = "26,700 Miles, 6-Speed Manual, Performance Modifications"
-        startbid = "1.5 Cr."
-        timer = "3d 12h 34m"
-        />
-        <Auctioncard 
-        imagelink = "https://media-r2.carsandbids.com/cdn-cgi/image/width=2080,quality=70/4822e9034b0b6b357b3f73fabdfc10e586c36f68/photos/rjjmlZQw-qr21p-HJy6-(edit).jpg?t=169991877382"
-        carname = "2017 Jeep Wrangler Unlimited Rubicon Hard Rock 4x4"
-        details = "1 Owner, 4WD, 3-Piece Hardtop, Unmodified"
-        startbid = "90 Lacs"
-        timer = "4d 2h 34m"
-        />
-        <Auctioncard 
-        imagelink ="https://media-r2.carsandbids.com/cdn-cgi/image/width=2080,quality=70/e256f6264a44b30223df03b5e6096b472b5a652a/photos/36EANjby-Lqcbc8TKjv-(edit).jpg?t=169694558483"
-        carname = "1983 Nissan Fairlady Z Turbo"
-        details = "Japanese-Market Z31, 5-Speed Manual, Turbo V6, Rally Car Replica"
-        startbid = "1.3 Cr."
-        timer = "2d 12h 34m"
-
-        />
-        <Auctioncard 
-        imagelink ="https://media-r2.carsandbids.com/cdn-cgi/image/width=2080,quality=70/c7387fa5557775cb743f87fc02d6cb831afb20b2/photos/KPLBkR4a-8v7AFlC0q4-(edit).jpg?t=169981317838"
-        carname = "2019 Subaru WRX STI"
-        details = "1 Owner, 6-Speed Manual, Extensively Modified, AWD, Lapis Blue"
-        startbid = "55 Lacs"
-        timer = "1d 2h 34m"
-        />
-        <Auctioncard 
-        
-        imagelink ="https://media-r2.carsandbids.com/cdn-cgi/image/width=2080,quality=70/d9b636c2ec84ddc3bc7f2eb32861b39bdd5f9683/photos/rjRR7y8l-zfBnucmtO5-(edit).jpg?t=169957581367"
-        carname = "2023 Rivian R1S Adventure Edition"
-        details = "Quad-Motor AWD, Large Battery Pack, Ocean Coast Interior"
-        startbid = "1.8 Cr."
-        timer = "2d 1h 3m"
-        />
+      <div className="flex flex-wrap mx-5 mt-10 gap-24 overflow-auto">
+        {data?.map(
+          (item, index) =>
+            item.email !== userEmail && ( // Conditional rendering based on email match
+              <Auctioncard
+                key={index} // Assuming each item has a unique 'id'. If not, use 'index'.
+                imagelink={item.image}
+                carname={item.carName}
+                details={`${item.modelYear} ${item.modelName}, ${item.details}`}
+                startbid={item.startingPrice}
+                id={item._id}
+                // timer={/* logic to calculate remaining time based on item.auctionEndTime */}
+              />
+            )
+        )}
       </div>
 
       <div className="ml-5 font-semibold my-10 text-2xl relative">
-      
         Auctoin Your Car
         <div className="absolute h-0.5 w-full bg-gray-800 bottom-0"></div>
       </div>
 
-
       <div className="flex justify-center bg-gray-900 rounded-[50px] shadow-lg">
-        <Auctoinform/>
-
+        <Auctoinform />
       </div>
 
-      <div className = "ml-5 font-semibold my-10 text-2xl relative">
-
+      <div className="ml-5 font-semibold my-10 text-2xl relative">
         My Auctions
         <div className="absolute h-0.5 w-full bg-gray-800 bottom-0"></div>
-
       </div>
 
       <div className="flex flex-wrap mx-5 mt-10 gap-24 overflow-auto  ">
-        <Auctioncard
-        imagelink="https://media-r2.carsandbids.com/cdn-cgi/image/width=2080,quality=70/ee7f173e46ec801a48d1673c50f9cebaa1bf2854/photos/3gedNQmb-Ew-ISBZumA-(edit).jpg?t=169843298201"
-        carname="2021 Ferrari F8 Spider"
-        details = "710-hp Twin-Turbo V8, Rosso Corsa, $111,790 In Options"
-        startbid="4.5 Cr."
-        placebid = {false}
-        timer = "0d 3h 24m"
-        />
+        {usercardata?.map((item, index) => (
+          <Auctioncard
+            key={index} // Assuming each item has a unique 'id'. If not, use 'index'.
+            imagelink={item.image}
+            carname={item.carName}
+            details={`${item.modelYear} ${item.modelName}, ${item.details}`}
+            startbid={item.startingPrice}
+            placebid={false}
+            id={item._id}
+            // timer={/* logic to calculate remaining time based on item.auctionEndTime */}
+          />
+        ))}
       </div>
 
-
-      <div className = "ml-5 font-semibold my-10 text-2xl relative">
-
-            My Bids
+      <div className="ml-5 font-semibold my-10 text-2xl relative">
+        My Bids
         <div className="absolute h-0.5 w-full bg-gray-800 bottom-0"></div>
-
-        </div>
-      <div className=" flex flex-wrap mx-5 my-10 gap-24 overflow-auto" >
-      <table id="bookingTable" className="w-full border-collapse">
-                <thead>
-                    <tr>
-                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">ID</th>
-                        
-                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">Car Model </th>
-                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">Email</th>
-                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">Placed Bid</th>
-                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">Payment</th>
-                        
-                    </tr>
-        </thead>
-        
-        <tbody>
-        
-          
-          <tr className=''>
-            <td className="pt-2">1</td>
-      
-            <td className="pt-2">2003 Porsche 911 Turbo Coupe</td>
-            <td className="pt-2">wasi@gmail.com</td>
-            <td className="pt-2"><b>BDT 1.4 Cr.</b></td>
-            <td className="pt-2 flex justify-center">
-            <button>
-                <div className="w-[75px] h-8 px-5 py-1.5 bg-yellow-500 rounded shadow flex-col justify-center items-center gap-2.5 inline-flex">
-                    <div className="text-black text-base font-light font-['Oxygen']">Pending</div>
-            </div></button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
       </div>
-      <div className = "ml-5 font-semibold my-10 text-2xl relative">
+      <div className=" flex flex-wrap mx-5 my-10 gap-24 overflow-auto">
+        <table id="bookingTable" className="w-full border-collapse">
+          <thead>
+            <tr>
+              <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">
+                ID
+              </th>
 
+              <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">
+                Car Model{" "}
+              </th>
+              <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">
+                Email
+              </th>
+              <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">
+                Placed Bid
+              </th>
+              <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">
+                Payment
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {data?.map((item1) =>
+              item1.bidders?.map(
+                (item2, index) =>
+                  item2.bidderEmail === userEmail && ( // Conditional rendering
+                    <tr key={index}>
+                      <td className="pt-2">{index + 1}</td>
+                      <td className="pt-2">{item1.modelName}</td>
+                      <td className="pt-2">{item2.bidderEmail}</td>
+                      <td className="pt-2">
+                        <b>{item2.bidAmount}</b>
+                      </td>
+                      <td className="pt-2 flex justify-center">
+                        <button>
+                          <div className="w-[75px] h-8 px-5 py-1.5 bg-yellow-500 rounded shadow flex-col justify-center items-center gap-2.5 inline-flex">
+                            <div className="text-black text-base font-light font-['Oxygen']">
+                              Pending
+                            </div>
+                          </div>
+                        </button>
+                      </td>
+                    </tr>
+                  )
+              )
+            )}
+          </tbody>
+        </table>
+      </div>
+      <div className="ml-5 font-semibold my-10 text-2xl relative">
         Bids On My Car
-      <div className="absolute h-0.5 w-full bg-gray-800 bottom-0"></div>
+        <div className="absolute h-0.5 w-full bg-gray-800 bottom-0"></div>
       </div>
-      <div className=" flex flex-wrap mx-5 my-10 gap-24 overflow-auto" >
-      <table id="bookingTable" className="w-full border-collapse">
-                <thead>
-                    <tr>
-                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">ID</th>
-                        
-                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">Car Model </th>
-                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">Email</th>
-                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">Placed Bid</th>
-                        <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">Payment</th>
-                        
-                    </tr>
-        </thead>
-        
-        <tbody>
-        
-          
-          <tr className=''>
-            <td className="pt-2">1</td>
-      
-            <td className="pt-2">2021 Ferrari F8 Spider</td>
-            <td className="pt-2">tausif@gmail.com</td>
-            <td className="pt-2"><b>BDT 4.6 Cr.</b></td>
-            <td className="pt-2 flex justify-center">
-            <button>
-                <div className="w-[75px] h-8 px-5 py-1.5 bg-yellow-500 rounded shadow flex-col justify-center items-center gap-2.5 inline-flex">
-                    <div className="text-black text-base font-light font-['Oxygen']">Pending</div>
-            </div></button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div className=" flex flex-wrap mx-5 my-10 gap-24 overflow-auto">
+        <table id="bookingTable" className="w-full border-collapse">
+          <thead>
+            <tr>
+              <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">
+                ID
+              </th>
+
+              <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">
+                Car Model{" "}
+              </th>
+              <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">
+                Email
+              </th>
+              <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">
+                Placed Bid
+              </th>
+              <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">
+                Payment
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {usercardata?.map((item1) =>
+              item1.bidders?.map((item2, index) => (
+                <tr key={index}>
+                  <td className="pt-2">{index + 1}</td>
+                  <td className="pt-2">{item1.modelName}</td>
+                  <td className="pt-2">{item2.bidderEmail}</td>
+                  <td className="pt-2">
+                    <b>{item2.bidAmount}</b>
+                  </td>
+                  <td className="pt-2 flex justify-center">
+                    <button>
+                      <div className="w-[75px] h-8 px-5 py-1.5 bg-yellow-500 rounded shadow flex-col justify-center items-center gap-2.5 inline-flex">
+                        <div className="text-black text-base font-light font-['Oxygen']">
+                          Pending
+                        </div>
+                      </div>
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
-    
+      <div className="flex flex-col gap-2">
+        <div className="ml-5 font-semibold my-10 text-2xl relative">
+          Report and Issue
+          <div className="absolute h-0.5 w-full bg-gray-800 bottom-0"></div>
+        </div>
+        <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label className="block uppercase tracking-wide text-black text-xs font-bold mb-2">
+              Describe The Issues You Faced
+            </label>
+            <input
+              className="appearance-none block w-full bg-gray-200 text-gray-800 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+              type="text"
+              placeholder="..."
+              value={issue}
+              onChange={(e) => setIssue(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="flex justify-start">
+          <button
+            type="submit"
+            className="px-4 py-2 font-bold text-white bg-gray-800 rounded hover:bg-gray-900 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
+            onClick={handleSubmit}
+          >
+            Submit
+          </button>
+        </div>
+      </div>
     </>
   );
 };

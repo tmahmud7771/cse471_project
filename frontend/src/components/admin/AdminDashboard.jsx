@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Card } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 import Tablecom from "./Tablecom";
-
+import Auctioncard from "../customer/Auctioncard";
+import axios from "axios";
 const AdminDashboard = () => {
   function checkUserLoggedIn() {
     const token = localStorage.getItem("token");
@@ -22,36 +23,273 @@ const AdminDashboard = () => {
     ? JSON.parse(localStorage.getItem("user")).email
     : "";
 
+  const isAdmin = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user")).isAdmin
+    : "";
+
+  const name = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user")).name
+    : "";
+
+  const userimage = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user")).image
+    : "";
+
+  const [action, setAction] = useState("");
+  const [image, setImage] = useState("");
+  const [data, setData] = useState([]);
+  const [reprots, setReport] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3001/api/auctoin/getallauctoin"
+      );
+      setData(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // Handle error appropriately
+    }
+  };
+
+  const fetchReport = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/api/report");
+      setReport(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // Handle error appropriately
+    }
+  };
+
   useEffect(() => {
     if (!userLoggedIn) {
       navigate("/login");
     }
+    fetchData();
+    fetchReport();
   }, []);
+
+  console.log(data);
+
+  function changeStatus(obj_id, email, trxnid) {
+    console.log(obj_id, email, trxnid);
+    axios
+      .put(`http://localhost:3001/api/auctoin/bid/pay/${obj_id}`, {
+        email,
+        trxnid,
+      })
+      .then((response) => {
+        console.log("Success:", response.data);
+        // Reload the page after the request is successful
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 
   return (
     <>
-      {userEmail === "tmahmudbia@gmail.com" ? (
-        <div>
-          <div style={{ textAlign: "center", margin: "10px 10px 0px 700px" }}>
-            {" "}
-            <Card
-              className="max-w-sm"
-              imgSrc="https://images.unsplash.com/photo-1575936123452-b67c3203c357?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
-              horizontal
-            >
-              <h5
-                className="text-2xl font-bold tracking-tight text-light-900"
-                style={{ color: "white" }}
-              >
-                {userEmail}
-              </h5>
-              <p className="font-normal text-gray-700 dark:text-gray-400">
-                Wellcome to admin dashboard
-              </p>
-            </Card>
+      {isAdmin ? (
+        <div className="flex flex-col">
+          <div className="flex flex-col items-center mt-[100px]">
+            <img
+              className="rounded-full shadow-sm shadow-gray-800 h-36 w-36"
+              src={
+                userimage
+                  ? ""
+                  : "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
+              }
+              alt="profile pic"
+            />
+            <h1 className="font-bold text-2xl mt-4">Welcome {name}</h1>
+            <div className="mt-2 h-0.5 w-[200px] bg-gray-800"></div>
           </div>
-          <div style={{ margin: "130px 0px 0px 300px" }}>
-            <Tablecom apiUrl="http://localhost:30001/api/payment/getall" />
+
+          <div className="my-10">
+            <div className="flex fle-row gap-4 items-center">
+              <h1 className="font-bold text-2xl ml-4">All Auctions</h1>
+              <input
+                className="border-2 border-gray-800 rounded-md px-2"
+                type="search"
+                placeholder="Search By Car Name"
+              />
+            </div>
+            <div className="mt-2 h-0.5 w-full bg-gray-800"></div>
+            <div className="mt-10 mx-4">
+              <div className="flex flex-wrap mx-5 mt-10 gap-24 overflow-auto">
+                {data?.map((item, index) => (
+                  // Conditional rendering based on email match
+                  <Auctioncard
+                    key={index} // Assuming each item has a unique 'id'. If not, use 'index'.
+                    imagelink={item.image}
+                    carname={item.carName}
+                    details={`${item.modelYear} ${item.modelName}, ${item.details}`}
+                    startbid={item.startingPrice}
+                    id={item._id}
+                    placebid={false}
+                    // timer={/* logic to calculate remaining time based on item.auctionEndTime */}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="my-10">
+            <div className="flex fle-row gap-4 items-center">
+              <h1 className="font-bold text-2xl ml-4">All Bids</h1>
+              <input
+                className="border-2 border-gray-800 rounded-md px-2"
+                type="search"
+                placeholder="Search By Car Name"
+              />
+            </div>
+            <div className="mt-2 h-0.5 w-full bg-gray-800"></div>
+            <div className="mt-10 mx-4">
+              <table>
+                <thead>
+                  <tr>
+                    <th className="bg-gray-800 text-white text-center rounded-md">
+                      ID
+                    </th>
+                    <th className="bg-gray-800 text-white text-center rounded-md">
+                      Car Name
+                    </th>
+                    <th className="bg-gray-800 text-white text-center rounded-md">
+                      From
+                    </th>
+                    <th className="bg-gray-800 text-white text-center rounded-md">
+                      To
+                    </th>
+                    <th className="bg-gray-800 text-white text-center rounded-md">
+                      Bid Amount
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data?.map((item1) =>
+                    item1.bidders?.map((item2, index) => (
+                      <tr>
+                        <td>1</td>
+                        <td>Car1</td>
+                        <td>{item1.email}</td>
+                        <td>{item2.bidderEmail}</td>
+                        <td>{item2.bidAmount}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="my-10">
+            <div className="flex fle-row gap-4 items-center">
+              <h1 className="font-bold text-2xl ml-4">All Payments</h1>
+              <input
+                className="border-2 border-gray-800 rounded-md px-2"
+                type="search"
+                placeholder="Search By Email"
+              />
+            </div>
+            <div className="mt-2 h-0.5 w-full bg-gray-800"></div>
+            <div className="mt-10 mx-4">
+              <table>
+                <thead>
+                  <tr>
+                    <th className="bg-gray-800 text-white text-center rounded-md">
+                      ID
+                    </th>
+                    <th className="bg-gray-800 text-white text-center rounded-md">
+                      Car Name
+                    </th>
+                    <th className="bg-gray-800 text-white text-center rounded-md">
+                      From
+                    </th>
+                    <th className="bg-gray-800 text-white text-center rounded-md">
+                      To
+                    </th>
+                    <th className="bg-gray-800 text-white text-center rounded-md">
+                      Bid Amount
+                    </th>
+                    <th className="bg-gray-800 text-white text-center rounded-md">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data?.map((item1) =>
+                    item1.bidders?.map(
+                      (item2, index) =>
+                        item2.payment === false && (
+                          <tr>
+                            <td>1</td>
+                            <td>{item1.carName}</td>
+                            <td>{item1.email}</td>
+                            <td>{item2.bidderEmail}</td>
+                            <td>{item2.bidAmount}</td>
+                            <td className="flex flex-row items-center justify-around">
+                              <button
+                                className="rounded shadow-sm bg-teal-600 hover:bg-teal-800"
+                                value={"approve"}
+                                onClick={() =>
+                                  changeStatus(
+                                    item1._id,
+                                    item2.bidderEmail,
+                                    item2.bidtrnx
+                                  )
+                                }
+                              >
+                                Approve
+                              </button>
+                            </td>
+                          </tr>
+                        )
+                    )
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="my-10">
+            <div className="flex fle-row gap-4 items-center">
+              <h1 className="font-bold text-2xl ml-4">All Reports</h1>
+              <input
+                className="border-2 border-gray-800 rounded-md px-2"
+                type="search"
+                placeholder="Search By Email"
+              />
+            </div>
+            <div className="mt-2 h-0.5 w-full bg-gray-800"></div>
+            <div className="mt-10 mx-4">
+              <table>
+                <thead>
+                  <tr>
+                    <th className="bg-gray-800 text-white text-center rounded-md">
+                      ID
+                    </th>
+                    <th className="bg-gray-800 text-white text-center rounded-md">
+                      Name
+                    </th>
+                    <th className="bg-gray-800 text-white text-center rounded-md">
+                      Email
+                    </th>
+                    <th className="bg-gray-800 text-white text-center rounded-md">
+                      Issue
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reprots?.map((item) => (
+                    <tr>
+                      <td>1</td>
+                      <td>{item.name}</td>
+                      <td>{item.email}</td>
+                      <td>{item.message}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       ) : (

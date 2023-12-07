@@ -9,16 +9,20 @@ const Auctioncard = ({
   startbid,
   placebid = true,
   timer,
+  id,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bidPrice, setBidPrice] = useState("");
   const [tranxd, setTrnxd] = useState("");
   const [error, setError] = useState("");
-
   const [data, setData] = useState({});
 
   const userEmail = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user")).email
+    : "";
+
+  const userName = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user")).name
     : "";
   console.log(userEmail);
   const openModal = () => {
@@ -41,16 +45,13 @@ const Auctioncard = ({
     // }
 
     try {
-      const response = await axios.post(
-        "http://localhost:3001/api/payment/create",
+      const response = await axios.put(
+        `http://localhost:3001/api/auctoin/bid/${id}`,
         {
-          paymentMethod: "bkash",
-          paymentResult: {
-            tnxid: tranxd,
-            status: "pending",
-            email_address: userEmail,
-            price: bidPrice,
-          },
+          email: userEmail,
+          trxnid: tranxd,
+          bidderName: userName,
+          bidAmount: bidPrice,
         }
       );
 
