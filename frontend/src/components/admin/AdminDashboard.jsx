@@ -23,11 +23,9 @@ const AdminDashboard = () => {
     ? JSON.parse(localStorage.getItem("user")).email
     : "";
 
-  const isAdmin = true;
-
-  // localStorage.getItem("user")
-  //   ? JSON.parse(localStorage.getItem("user")).isAdmin
-  //   : "";
+  const isAdmin = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user")).isAdmin
+    : "";
 
   const name = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user")).name
