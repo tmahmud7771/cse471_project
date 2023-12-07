@@ -21,53 +21,53 @@ const Header = () => {
     <nav className="bg-gray-800">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="hidden md:flex space-x-4">
+          <div className="flex flex-row gap-2 items-center">
             <div className="flex-shrink-0">
-              <img className="h-12 w-auto" src={Img} alt="Your Company" />
+              <img className="h-36 w-auto" src={Img} alt="Your Company" />
             </div>
             {/* Links */}
-            <a
-              href="#"
+            <Link
+              to="/"
               className="text-white rounded-md px-3 py-2 text-sm font-medium"
               aria-current="page"
             >
               Home
-            </a>
-            <a
-              href="admin"
+            </Link>
+            <Link
+              to="/admin"
               className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
             >
               Admin
-            </a>
-            <a
-              href="customer"
+            </Link>
+            <Link
+              to="/customer"
               className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
             >
               Customer
-            </a>
+            </Link>
           </div>
           <div className="flex items-center space-x-4">
             {!userLoggedIn ? (
-              <a
-                href="login"
+              <Link
+                to="/login"
                 className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
               >
                 Login
-              </a>
+              </Link>
             ) : (
               <div className="flex space-x-4">
-                <a
+                <Link
                   onClick={handleLogout}
                   className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                 >
                   Logout
-                </a>
-                <a
-                  href="/changepass"
+                </Link>
+                <Link
+                  to="/changepass"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                 >
                   Change Password
-                </a>
+                </Link>
               </div>
             )}
           </div>

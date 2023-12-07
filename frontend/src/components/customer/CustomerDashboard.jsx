@@ -64,9 +64,11 @@ const CustomerDashboard = () => {
   console.log(data);
   console.log(usercardata);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [bidPrice, setBidPrice] = useState("");
   const [tranxd, setTrnxd] = useState("");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -123,13 +125,24 @@ const CustomerDashboard = () => {
       alert("Failed to submit report.");
     }
   };
-
+  const buttonStyle = {
+    animation:
+      usercardata?.length === 0 ? "" : "shake 0.5s ease-in-out infinite",
+  };
   return (
     <>
       <div className=" flex flex-row justify-between ml-5  mt-10 relative">
         <div className="absolute h-0.5 w-full bg-gray-800 bottom-0"></div>
         <p className=" font-semibold text-2xl ">On Going Auctions</p>
-        <button className="rounded shadow-sm text-white bg-gray-800 mr-4 mb-4 hover:bg-gray-900">
+        <button
+          className={`rounded shadow-sm text-white ${
+            usercardata?.length === 0
+              ? "bg-gray-800 hover:bg-gray-900"
+              : "bg-red-700 hover:bg-red-900"
+          } mr-4 mb-4`}
+          style={buttonStyle}
+          onClick={openModal}
+        >
           Show Notification
         </button>
       </div>
@@ -212,7 +225,7 @@ const CustomerDashboard = () => {
                 Car Model{" "}
               </th>
               <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">
-                Email
+                Owner's Email
               </th>
               <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">
                 Placed Bid
@@ -236,12 +249,8 @@ const CustomerDashboard = () => {
                         <b>{item2.bidAmount}</b>
                       </td>
                       <td className="pt-2 flex justify-center">
-                        <button>
-                          <div className="w-[75px] h-8 px-5 py-1.5 bg-yellow-500 rounded shadow flex-col justify-center items-center gap-2.5 inline-flex">
-                            <div className="text-black text-base font-light font-['Oxygen']">
-                              Pending
-                            </div>
-                          </div>
+                        <button className="rounded shadow-sm bg-yellow-300 text-black">
+                          Pending
                         </button>
                       </td>
                     </tr>
@@ -267,7 +276,7 @@ const CustomerDashboard = () => {
                 Car Model{" "}
               </th>
               <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">
-                Email
+                Bidder's Email
               </th>
               <th className="w-14 h-8 px-5 py-1.5 bg-white rounded shadow">
                 Placed Bid
@@ -289,12 +298,8 @@ const CustomerDashboard = () => {
                     <b>{item2.bidAmount}</b>
                   </td>
                   <td className="pt-2 flex justify-center">
-                    <button>
-                      <div className="w-[75px] h-8 px-5 py-1.5 bg-yellow-500 rounded shadow flex-col justify-center items-center gap-2.5 inline-flex">
-                        <div className="text-black text-base font-light font-['Oxygen']">
-                          Pending
-                        </div>
-                      </div>
+                    <button className="rounded shadow-sm bg-yellow-300 text-black">
+                      Pending
                     </button>
                   </td>
                 </tr>
@@ -332,6 +337,60 @@ const CustomerDashboard = () => {
           </button>
         </div>
       </div>
+      {isModalOpen && (
+        <div className="fixed inset-0 z-10 overflow-y-auto">
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            {/* Background overlay */}
+            <div
+              className="fixed inset-0 transition-opacity"
+              aria-hidden="true"
+            >
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+
+            {/* Modal panel */}
+            <span
+              className="hidden sm:inline-block sm:align-middle sm:h-screen"
+              aria-hidden="true"
+            >
+              &#8203;
+            </span>
+            <div
+              className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="modal-headline"
+            >
+              {/* Your modal content goes here */}
+              <div className=" flex flex-col items-center p-6">
+                <h2 className="text-xl font-semibold mb-4">Notifications</h2>
+                {usercardata?.map((item1) =>
+                  item1.bidders?.map((item2, index) =>
+                    // Check if item2.bidderEmail is not empty
+                    item2.bidderEmail ? (
+                      <p key={index} className="my-2">
+                        {item2.bidderEmail} bidded on your car.
+                      </p>
+                    ) : null
+                  )
+                )}
+
+                {/* Show "No notifications" if the list is empty */}
+                {usercardata &&
+                  !usercardata.some((item) =>
+                    item.bidders?.some((bidder) => bidder.bidderEmail)
+                  ) && <p>No notifications</p>}
+                <button
+                  className="mt-4 bg-gray-800 text-white rounded px-4 py-2 hover:bg-gray-900"
+                  onClick={closeModal}
+                >
+                  Close Modal
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

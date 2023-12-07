@@ -23,9 +23,11 @@ const AdminDashboard = () => {
     ? JSON.parse(localStorage.getItem("user")).email
     : "";
 
-  const isAdmin = localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user")).isAdmin
-    : "";
+  const isAdmin = true;
+
+  // localStorage.getItem("user")
+  //   ? JSON.parse(localStorage.getItem("user")).isAdmin
+  //   : "";
 
   const name = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user")).name
@@ -88,6 +90,37 @@ const AdminDashboard = () => {
         console.error("Error:", error);
       });
   }
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery2, setSearchQuery2] = useState("");
+  const [searchQuery3, setSearchQuery3] = useState("");
+  const [searchQuery4, setSearchQuery4] = useState("");
+
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+  };
+  const handleSearch2 = (event) => {
+    setSearchQuery2(event.target.value);
+  };
+  const handleSearch3 = (event) => {
+    setSearchQuery3(event.target.value);
+  };
+  const handleSearch4 = (event) => {
+    setSearchQuery4(event.target.value);
+  };
+
+  // Filter data based on the search query
+  const filteredData = data?.filter((item) =>
+    item.carName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  const filteredData2 = data?.filter((item) =>
+    item.carName.toLowerCase().includes(searchQuery2.toLowerCase())
+  );
+  const filteredData3 = data?.filter((item) =>
+    item.carName.toLowerCase().includes(searchQuery3.toLowerCase())
+  );
+  const filteredData4 = reprots?.filter((item) =>
+    item.email.toLowerCase().includes(searchQuery4.toLowerCase())
+  );
 
   return (
     <>
@@ -114,12 +147,14 @@ const AdminDashboard = () => {
                 className="border-2 border-gray-800 rounded-md px-2"
                 type="search"
                 placeholder="Search By Car Name"
+                value={searchQuery}
+                onChange={handleSearch}
               />
             </div>
             <div className="mt-2 h-0.5 w-full bg-gray-800"></div>
             <div className="mt-10 mx-4">
               <div className="flex flex-wrap mx-5 mt-10 gap-24 overflow-auto">
-                {data?.map((item, index) => (
+                {filteredData?.map((item, index) => (
                   // Conditional rendering based on email match
                   <Auctioncard
                     key={index} // Assuming each item has a unique 'id'. If not, use 'index'.
@@ -142,6 +177,8 @@ const AdminDashboard = () => {
                 className="border-2 border-gray-800 rounded-md px-2"
                 type="search"
                 placeholder="Search By Car Name"
+                value={searchQuery2}
+                onChange={handleSearch2}
               />
             </div>
             <div className="mt-2 h-0.5 w-full bg-gray-800"></div>
@@ -167,11 +204,11 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.map((item1) =>
+                  {filteredData2?.map((item1) =>
                     item1.bidders?.map((item2, index) => (
                       <tr>
                         <td>1</td>
-                        <td>Car1</td>
+                        <td>{item1.carName}</td>
                         <td>{item1.email}</td>
                         <td>{item2.bidderEmail}</td>
                         <td>{item2.bidAmount}</td>
@@ -188,7 +225,9 @@ const AdminDashboard = () => {
               <input
                 className="border-2 border-gray-800 rounded-md px-2"
                 type="search"
-                placeholder="Search By Email"
+                placeholder="Search By Car Name"
+                value={searchQuery3}
+                onChange={handleSearch3}
               />
             </div>
             <div className="mt-2 h-0.5 w-full bg-gray-800"></div>
@@ -217,7 +256,7 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.map((item1) =>
+                  {filteredData3?.map((item1) =>
                     item1.bidders?.map(
                       (item2, index) =>
                         item2.payment === false && (
@@ -279,7 +318,7 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {reprots?.map((item) => (
+                  {filteredData4?.map((item) => (
                     <tr>
                       <td>1</td>
                       <td>{item.name}</td>

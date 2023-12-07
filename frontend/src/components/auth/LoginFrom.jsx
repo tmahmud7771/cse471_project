@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import Logo from "../assets/Black_and_Red_Modern_Automotive_Car_Logo__2_-removebg-preview.png";
 import axios from "axios";
 
 const LoginFrom = () => {
@@ -49,11 +49,7 @@ const LoginFrom = () => {
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img
-          className="mx-auto h-10 w-auto"
-          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-          alt="Your Company"
-        />
+        <img className="mx-auto h-10 w-auto" src={Logo} alt="bids&beyond" />
 
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Sign in to your account
@@ -129,12 +125,12 @@ const LoginFrom = () => {
         )}
         <p className="mt-10 text-center text-sm text-gray-500">
           Not a member?{" "}
-          <a
-            href="signup"
+          <Link
+            to="/signup"
             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
           >
             Signup Now
-          </a>
+          </Link>
         </p>
       </div>
     </div>

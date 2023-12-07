@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import Video from "../assets/Cinematic Commercial for Corvette C8 ZO6 2023 by @TheProVideo.mp4";
 import Image from "../assets/Black_and_Red_Modern_Automotive_Car_Logo__2_-removebg-preview.png";
 import Audio from "../assets/Teriyaki Boyz - Tokyo Drift Instrumental.mp3";
@@ -30,11 +31,11 @@ const Landingpage = () => {
         <div className="text-white text-center">
           <img className="w-[800px] h-[400px]" src={Image} alt="imagename" />
         </div>
-        <div>
+        <Link to="/customer">
           <button className="rounded-md shadow-sm bg-gray-800 hover:bg-gray-900">
             Explore
           </button>
-        </div>
+        </Link>
       </div>
     </div>
   );
